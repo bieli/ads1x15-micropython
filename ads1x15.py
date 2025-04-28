@@ -2,6 +2,7 @@
 #
 # Copyright (c) 2016 Radomir Dopieralski (@deshipu),
 #               2017 Robert Hammelrath (@robert-hh)
+#               2024 Marcin Bielak (@bieli)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -143,7 +144,7 @@ class ADS1115:
         return (self.temp2[0] << 8) | self.temp2[1]
 
     def raw_to_v(self, raw):
-        v_p_b = _GAINS_V[self.gain] / 32768
+        v_p_b = _GAINS_V[self.gain] / 32767
         return raw * v_p_b
 
     def set_conv(self, rate=4, channel1=0, channel2=None):
@@ -163,14 +164,14 @@ class ADS1115:
         while not self._read_register(_REGISTER_CONFIG) & _OS_NOTBUSY:
             time.sleep_ms(1)
         res = self._read_register(_REGISTER_CONVERT)
-        return res if res < 32768 else res - 65536
+        return res if res < 32767 else res - 65535
 
     def read_rev(self):
         """Read voltage between a channel and GND. and then start
            the next conversion."""
         res = self._read_register(_REGISTER_CONVERT)
         self._write_register(_REGISTER_CONFIG, self.mode)
-        return res if res < 32768 else res - 65536
+        return res if res < 32767 else res - 65535
 
     def alert_start(self, rate=4, channel1=0, channel2=None,
                     threshold_high=0x4000, threshold_low=0, latched=False) :
@@ -195,7 +196,7 @@ class ADS1115:
     def alert_read(self):
         """Get the last reading from the continuous measurement."""
         res = self._read_register(_REGISTER_CONVERT)
-        return res if res < 32768 else res - 65536
+        return res if res < 32767 else res - 65535
 
 
 class ADS1113(ADS1115):
