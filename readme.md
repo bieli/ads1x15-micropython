@@ -17,6 +17,38 @@ If in continuous mode the CPU shall be triggered, the ALERT/RDY pin has to be
 connected too, and obviously VDD, GND and the analogue input(2). You might also
 set the address pin to low (address = 72) or high (address = 73).
 
+## Real use case
+
+```python
+
+from machine import I2C, Pin
+from ads1x15 import ADS1115
+
+addr = 72
+gain = 1
+
+i2c = I2C(scl=Pin(10), sda=Pin(9), freq=400000)
+
+adc = ADS1115(i2c, address=addr, gain=gain)
+
+while 1:
+    value_raw = adc.read(rate=0, channel1=0)
+    value_volts = adc.raw_to_v(value_raw)
+    print("Voltage: {:4.3f} V\n".format(value_volts))
+```
+
+### Example output from real use case
+```bash
+Voltage: 0.149 V
+
+Voltage: 0.150 V
+
+Voltage: 0.150 V
+
+Voltage: 0.150 V
+
+Voltage: 0.150 V
+```
 
 ## Class
 
