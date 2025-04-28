@@ -1,4 +1,4 @@
-﻿# Driver for the ADS1015/ADS1115 Analogue-Digital Converter
+﻿# Driver for the ADS1015/ADS1115 Analogue-Digital Converter (FIXED PROBLEM WITH PRECISSION!!!)
 
 This driver consists mostly of the work of Radomir Dopieralski (@deshipu).
 I added a few functions and changed the existing ones so it matches better
